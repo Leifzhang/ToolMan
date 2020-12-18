@@ -1,5 +1,6 @@
 # -* - coding: UTF-8 -* -
 import os
+from log import R, G, B
 
 changeSize = 0
 ignorePath = ['build',".idea",".DS_Store"]
@@ -37,16 +38,16 @@ def CompressPng(dir):
         imgFiles = GetFileFromThisRootDir(dir, 'png')
         for file in imgFiles:
             originSize = float(os.path.getsize(file))
-            cmd = "pngquant -f --skip-if-larger --strip --ext=.png " + file
+            cmd = "pngquant -f --skip-if-larger --strip --ext=.png --quality 70-70 " + file
             os.system(cmd)
             afterSize = float(os.path.getsize(file))
             if originSize > afterSize:
                 size = originSize - afterSize
                 changeSize = changeSize + size
-                print "changeFile: " + file +" changeSize:"+size
-                print  size
+                R("changeFile: " + file +" changeSize:"+str(size))
+                R(str(size))
     elif os.path.splitext(dir)[1][1:] == 'png':
-        cmd = "pngquant -f --skip-if-larger --strip --ext=.png " + dir
+        cmd = "pngquant -f --skip-if-larger --strip --ext=.png --quality 70-70 " + dir
         os.system(cmd)
 
 
@@ -74,4 +75,4 @@ if __name__ == '__main__':
     compressDir = os.getcwd()
     # 压缩目录下所有图片
     CompressPng(compressDir)
-    print  size_format(changeSize)
+    R(size_format(changeSize))
